@@ -72,16 +72,16 @@ const UserManagement = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
-          <button onClick={() => setShowAddForm(true)} className="btn-primary flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">User Management</h1>
+          <button onClick={() => setShowAddForm(true)} className="btn-primary flex items-center gap-2 w-full sm:w-auto">
             <UserPlus className="h-5 w-5" />
             Add New User
           </button>
         </div>
 
         <div className="card">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

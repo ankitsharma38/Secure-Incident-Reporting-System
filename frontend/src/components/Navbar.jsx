@@ -77,15 +77,15 @@ const Navbar = () => {
             </Link>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <Link to="/dashboard" className="text-gray-700 hover:text-primary">Dashboard</Link>
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <Link to="/dashboard" className="hidden md:block text-gray-700 hover:text-primary">Dashboard</Link>
             {user?.role !== 'user' && (
-              <Link to="/incidents" className="text-gray-700 hover:text-primary">All Incidents</Link>
+              <Link to="/incidents" className="hidden md:block text-gray-700 hover:text-primary">All Incidents</Link>
             )}
             {user?.role === 'superadmin' && (
               <>
-                <Link to="/users" className="text-gray-700 hover:text-primary">Users</Link>
-                <Link to="/audit" className="text-gray-700 hover:text-primary">Audit Logs</Link>
+                <Link to="/users" className="hidden md:block text-gray-700 hover:text-primary">Users</Link>
+                <Link to="/audit" className="hidden md:block text-gray-700 hover:text-primary">Audit Logs</Link>
               </>
             )}
             
@@ -127,9 +127,9 @@ const Navbar = () => {
                 )}
               </div>
 
-              <div className="flex items-center space-x-2 border-l pl-4">
+              <div className="flex items-center space-x-2 border-l pl-2 md:pl-4">
                 <User className="h-5 w-5 text-gray-600" />
-                <span className="text-sm text-gray-700">{user?.name}</span>
+                <span className="hidden sm:block text-sm text-gray-700">{user?.name}</span>
                 <span className="text-xs bg-primary text-white px-2 py-1 rounded">{user?.role}</span>
                 <button onClick={handleLogout} className="text-danger hover:text-red-700">
                   <LogOut className="h-5 w-5" />

@@ -127,7 +127,7 @@ const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
         </div>
       )}
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
