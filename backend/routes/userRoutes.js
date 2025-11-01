@@ -5,7 +5,7 @@ const { logAction } = require('../middleware/auditLogger');
 
 const router = express.Router();
 
-router.get('/', protect, authorize('superadmin'), getAllUsers);
+router.get('/', protect, authorize('admin', 'superadmin'), getAllUsers);
 router.put('/:id', protect, authorize('superadmin'), logAction('UPDATE', 'User'), updateUser);
 router.delete('/:id', protect, authorize('superadmin'), logAction('DELETE', 'User'), deleteUser);
 
