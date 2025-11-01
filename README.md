@@ -11,15 +11,19 @@ A highly secure cybersecurity Incident Reporting System built with the MERN stac
 
 ### User Dashboard
 - View own incidents in table format
+- Expandable rows to view full description and evidence files
 - Search, sort (by date/priority), and filter incidents
 - Real-time notifications for incident updates
 - Report incidents with evidence upload
+- Download evidence files
 
 ### Admin Dashboard
 - Analytics widgets (Total, Open, Resolved incidents)
 - Pie chart (Open vs Resolved)
 - Bar chart (Categories)
 - Average resolution time
+- Expandable incident rows with full details
+- View descriptions and download evidence files
 - Advanced filtering (status, category, priority)
 - Bulk actions (mark as resolved)
 - Assign incidents to specific admins
