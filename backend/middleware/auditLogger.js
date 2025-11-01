@@ -17,6 +17,12 @@ exports.logAction = (action, targetType) => {
           }
         }
 
+        const ipAddress = req.headers['x-forwarded-for']?.split(',')[0] || 
+                          req.socket.remoteAddress || 
+                          req.connection.remoteAddress || 
+                          req.ip || 
+                          'Unknown';
+        
         AuditLog.create({
           action,
           performedBy: req.user._id,
@@ -27,7 +33,7 @@ exports.logAction = (action, targetType) => {
             path: req.path,
             body: action === 'UPDATE' ? req.body : undefined
           }),
-          ipAddress: req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip
+          ipAddress: ipAddress.replace('::ffff:', '').replace('::1', '127.0.0.1')
         }).catch(err => console.error('Audit log error:', err));
       }
       originalSend.call(this, data);
