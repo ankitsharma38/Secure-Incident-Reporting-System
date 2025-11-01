@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { incidentAPI } from '../services/api';
 import toast from 'react-hot-toast';
-import { Edit, Trash2, UserPlus } from 'lucide-react';
+import { Edit, Trash2, UserPlus, ChevronDown, ChevronUp, Download } from 'lucide-react';
 
 const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
   const [selectedIncidents, setSelectedIncidents] = useState([]);
   const [editingIncident, setEditingIncident] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
 
   const getPriorityColor = (priority) => {
     const colors = {
@@ -35,8 +36,14 @@ const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
         headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
       })
         .then(res => res.json())
-        .then(data => setAdmins(data.filter(u => u.role === 'admin' || u.role === 'superadmin')))
-        .catch(() => {});
+        .then(data => {
+          const adminUsers = data.filter(u => u.role === 'admin' || u.role === 'superadmin');
+          setAdmins(adminUsers);
+        })
+        .catch(err => {
+          console.error('Failed to fetch admins:', err);
+          toast.error('Failed to load admin users');
+        });
     }
   }, [isAdmin]);
 
@@ -156,7 +163,8 @@ const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {incidents.map((incident) => (
-              <tr key={incident._id} className="hover:bg-gray-50">
+              <>
+              <tr key={incident._id} className="hover:bg-gray-50 cursor-pointer" onClick={() => setExpandedRow(expandedRow === incident._id ? null : incident._id)}>
                 {isAdmin && (
                   <td className="px-6 py-4">
                     <input
@@ -172,7 +180,12 @@ const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
                     />
                   </td>
                 )}
-                <td className="px-6 py-4 text-sm font-medium text-gray-900">{incident.title}</td>
+                <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                  <div className="flex items-center gap-2">
+                    {expandedRow === incident._id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    {incident.title}
+                  </div>
+                </td>
                 <td className="px-6 py-4 text-sm text-gray-500">{incident.category}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2 py-1 text-xs rounded-full ${getPriorityColor(incident.priority)}`}>
@@ -218,13 +231,13 @@ const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
                   <td className="px-6 py-4 text-sm">
                     <div className="flex gap-2">
                       <button
-                        onClick={() => setEditingIncident(editingIncident === incident._id ? null : incident._id)}
+                        onClick={(e) => { e.stopPropagation(); setEditingIncident(editingIncident === incident._id ? null : incident._id); }}
                         className="text-primary hover:text-blue-700"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
-                        onClick={() => handleDelete(incident._id)}
+                        onClick={(e) => { e.stopPropagation(); handleDelete(incident._id); }}
                         className="text-danger hover:text-red-700"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -233,6 +246,44 @@ const IncidentTable = ({ incidents, isAdmin, onRefresh }) => {
                   </td>
                 )}
               </tr>
+              {expandedRow === incident._id && (
+                <tr key={`${incident._id}-details`}>
+                  <td colSpan={isAdmin ? 8 : 6} className="px-6 py-4 bg-gray-50">
+                    <div className="space-y-3">
+                      <div>
+                        <h4 className="font-semibold text-sm text-gray-700 mb-1">Description:</h4>
+                        <p className="text-sm text-gray-600">{incident.description}</p>
+                      </div>
+                      {incident.reportedBy && (
+                        <div>
+                          <h4 className="font-semibold text-sm text-gray-700 mb-1">Reported By:</h4>
+                          <p className="text-sm text-gray-600">{incident.reportedBy.name} ({incident.reportedBy.email})</p>
+                        </div>
+                      )}
+                      {incident.evidence && incident.evidence.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-sm text-gray-700 mb-1">Evidence Files:</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {incident.evidence.map((file, index) => (
+                              <a
+                                key={index}
+                                href={`http://localhost:5000/${file}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm hover:bg-blue-200"
+                              >
+                                <Download className="h-3 w-3" />
+                                {file.split('/').pop()}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              )}
+              </>
             ))}
           </tbody>
         </table>
