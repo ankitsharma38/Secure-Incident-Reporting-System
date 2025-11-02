@@ -2,6 +2,10 @@
 
 A highly secure cybersecurity Incident Reporting System built with the MERN stack, featuring advanced dashboards, real-time notifications, role-based access control (RBAC), and comprehensive audit logging.
 
+## 📦 Repository
+
+**GitHub**: [https://github.com/ankitsharma38/Secure-Incident-Reporting-System](https://github.com/ankitsharma38/Secure-Incident-Reporting-System)
+
 ## 🚀 Features
 
 ### Authentication & Authorization
@@ -73,48 +77,72 @@ SharkStriker/
 ### Prerequisites
 - Node.js (v16+)
 - MongoDB (local or Atlas)
+- Git
 
-### Quick Start
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/ankitsharma38/Secure-Incident-Reporting-System.git
+cd Secure-Incident-Reporting-System
+```
 
-**1. Backend Setup**
+### Step 2: Backend Setup
 ```bash
 cd backend
 npm install
-# Create .env file (see .env.example)
-npm run dev
 ```
 
-**2. Frontend Setup**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-**3. Create Test Users**
-```bash
-cd backend
-node utils/seedData.js
-```
-
-### Environment Variables (.env)
+Create `.env` file in the `backend` folder:
 ```env
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/incident_reporting_system
-JWT_SECRET=your_secret_key
-JWT_REFRESH_SECRET=your_refresh_secret
+JWT_SECRET=your_secret_key_here_change_this
+JWT_REFRESH_SECRET=your_refresh_secret_here_change_this
 JWT_EXPIRE=1h
 JWT_REFRESH_EXPIRE=7d
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 ```
 
-### MongoDB Atlas Setup (Optional)
+Start the backend server:
+```bash
+npm run dev
+```
+Backend will run on: `http://localhost:5000`
+
+### Step 3: Frontend Setup
+Open a new terminal:
+```bash
+cd frontend
+npm install
+```
+
+Start the frontend:
+```bash
+npm run dev
+```
+Frontend will run on: `http://localhost:5173`
+
+### Step 4: Seed Test Users
+Open a new terminal:
+```bash
+cd backend
+node utils/seedData.js
+```
+
+### MongoDB Setup Options
+
+#### Option 1: Local MongoDB (Recommended for Development)
+1. Install MongoDB Community Edition from [mongodb.com](https://www.mongodb.com/try/download/community)
+2. Start MongoDB service
+3. Use the default connection string in `.env`
+
+#### Option 2: MongoDB Atlas (Cloud)
 1. Create account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Create free cluster (M0)
-3. Create database user
-4. Whitelist IP (0.0.0.0/0 for development)
-5. Get connection string and update MONGODB_URI
+3. Create database user with password
+4. Whitelist IP address (0.0.0.0/0 for development)
+5. Get connection string and update `MONGODB_URI` in `.env`
+6. Replace `<password>` with your database user password
 
 ## 🎯 Usage
 
@@ -174,16 +202,6 @@ CLIENT_URL=http://localhost:5173
 - Input validation
 - File upload restrictions (5MB, specific types)
 - Audit logging with IP tracking
-
-## 🚀 Deployment
-
-**Backend**: Render/Railway/Heroku
-**Frontend**: Vercel/Netlify
-**Database**: MongoDB Atlas
-
-## 📝 License
-
-MIT License
 
 ---
 
